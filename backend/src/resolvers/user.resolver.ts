@@ -2,7 +2,7 @@ import { users } from "../fakeData/data.js";
 
 const userResolver = {
     Query: {
-        users: () => {
+        users: ({req, res}) => {
             return users
         },
         user: (_: any, { userId }: any) => {
