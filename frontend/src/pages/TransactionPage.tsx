@@ -26,7 +26,7 @@ const TransactionPage: React.FC = () => {
     // if (loading) return <TransactionFormSkeleton />;
 
     return (
-        <div className='flex justify-center items-center'>
+        <div className='h-screen flex justify-center items-center'>
             <div className='bg-gray-100 rounded-lg shadow-2xl max-w-xl mx-auto flex flex-col items-center justify-center p-4'>
                 <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r text-green-500 inline-block text-transparent bg-clip-text'>
                     Update this transaction

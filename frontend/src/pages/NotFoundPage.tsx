@@ -1,7 +1,7 @@
 const NotFound: React.FC = () => {
     return (
         <section>
-            <div className='w-auto flex'>
+            <div className='h-screen w-auto flex'>
                 <div className='h-full w-full m-auto text-center'>
                     <div className="justify-center flex h-4/5 w-auto" >
                         <img className="h-full" src='/404-error-background-piggy-bank.jpg' alt='404' />
