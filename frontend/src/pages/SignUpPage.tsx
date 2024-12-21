@@ -1,17 +1,23 @@
+import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import InputField from "../components/InputField";
 import RadioButton from "../components/RadioButton";
+import { SIGN_UP } from "../graphql/mutations/user.mutation";
+import GET_AUTHENTICATED_USER from "../graphql/queries/user.query";
 import { User } from "../types/user.types";
 
 const SignUpPage: React.FC = () => {
     const [signUpData, setSignUpData] = useState<User>({
-        name: "",
-        username: "",
-        password: "",
         gender: "",
+        name: "",
+        password: "",
+        username: "",
     });
-
+    const [signup, { loading }] = useMutation(SIGN_UP, {
+        refetchQueries: [GET_AUTHENTICATED_USER],
+    });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
 
@@ -30,7 +36,22 @@ const SignUpPage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("submittedData", signUpData);
+        if (!signUpData.name || !signUpData.username || !signUpData.password || !signUpData.gender) {
+            toast.error("Please fill in all fields.");
+            return;
+        }
+        console.log("signUpData", { input: signUpData });
+        try {
+            await signup({
+                variables: {
+                    input: signUpData,
+                },
+            });
+            toast.success("Sign up successful");
+        } catch (err: any) {
+            console.error("Error during mutation", err);
+            toast.error(err.message);
+        }
     };
 
     return (
@@ -42,7 +63,7 @@ const SignUpPage: React.FC = () => {
                         <h1 className='text-sm font-semibold mb-6 text-green-500 text-center'>
                             Join to keep track of your expenses
                         </h1>
-                        <form className='space-y-4' onSubmit={(e) => handleSubmit(e)}>
+                        <form className='space-y-4' onSubmit={handleSubmit}>
                             <InputField
                                 label='Full Name'
                                 id='name'
@@ -89,8 +110,9 @@ const SignUpPage: React.FC = () => {
                                 <button
                                     type='submit'
                                     className='w-full bg-green-500 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed'
+                                    disabled={loading}
                                 >
-                                    Sign Up
+                                    {loading ? "Loading..." : "Sign Up"}
                                 </button>
                             </div>
                         </form>

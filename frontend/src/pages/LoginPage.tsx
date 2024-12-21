@@ -1,12 +1,20 @@
+import { useMutation } from "@apollo/client";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import InputField from "../components/InputField";
+import { LOGIN } from "../graphql/mutations/user.mutation";
+import GET_AUTHENTICATED_USER from "../graphql/queries/user.query";
 import { LoginResponse } from "../types/user.types";
 
 const LoginPage: React.FC = () => {
     const [loginData, setLoginData] = useState<LoginResponse>({
         username: "",
         password: "",
+    });
+
+    const [login, { loading }] = useMutation(LOGIN, {
+        refetchQueries: [GET_AUTHENTICATED_USER],
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,9 +25,22 @@ const LoginPage: React.FC = () => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("LoginData", loginData);
+        if (!loginData.username || !loginData.password) {
+            return toast.error("Please fill in all fields.");
+        }
+        try {
+            await login({
+                variables: {
+                    input: loginData,
+                }
+            })
+            toast.success('Login successful');
+        } catch (error: any) {
+            console.error("Error during login", error);
+            toast.error(error.message);
+        }
     };
 
     return (
@@ -54,8 +75,9 @@ const LoginPage: React.FC = () => {
                                     className='w-full bg-green-500 text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black  focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300
 										disabled:opacity-50 disabled:cursor-not-allowed
 									'
+                                    disabled={loading}
                                 >
-                                    Login
+                                    {loading ? 'Loading...' : 'Login'}
                                 </button>
                             </div>
                         </form>

@@ -4,7 +4,11 @@ import { Doughnut } from "react-chartjs-2";
 import Cards from "../components/Cards";
 import TransactionForm from "../components/TransactionForm";
 
+import { useMutation } from "@apollo/client";
+import toast from "react-hot-toast";
 import { MdLogout } from "react-icons/md";
+import { LOGOUT } from "../graphql/mutations/user.mutation";
+import GET_AUTHENTICATED_USER from "../graphql/queries/user.query";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -24,12 +28,18 @@ const HomePage = () => {
             },
         ],
     };
-
-    const handleLogout = () => {
-        console.log("Logging out...");
+    const [logout, { loading }] = useMutation(LOGOUT, {
+        refetchQueries: [GET_AUTHENTICATED_USER],
+    });
+    const handleLogout = async () => {
+        try {
+            await logout();
+            toast.success("Logged out successfully");
+        } catch (error: any) {
+            console.error("Error during logout", error);
+            toast.error(error.message);
+        }
     };
-
-    const loading = false;
 
     return (
         <>

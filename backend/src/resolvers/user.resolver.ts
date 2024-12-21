@@ -7,7 +7,7 @@ const userResolver: IResolvers = {
     //Todo remove any and replace with proper types
     //Todo add user/transaction relation
     Query: {
-        users: async (): Promise<any> => {
+        users: async (_, __,): Promise<any> => {
             try {
                 const users = await User.find();
                 if (!users) {
@@ -19,7 +19,7 @@ const userResolver: IResolvers = {
                 throw new Error(err.message || "Internal server error");
             }
         },
-        user: async ({userId}: {userId: string}): Promise<any> => {
+        user: async (_, {userId}: {userId: string}): Promise<any> => {
             try {
                 const user = await User.findById(userId);
                 
@@ -32,7 +32,7 @@ const userResolver: IResolvers = {
                 throw new Error(err.message || "Internal server error");
             }
         },
-        authUser: async (context: Context): Promise<any> => {
+        authUser: async (_, __, context: Context): Promise<any> => {
             try {
                 const user = await context.getUser();
                 return user;
@@ -43,14 +43,14 @@ const userResolver: IResolvers = {
         }
     },
     Mutation: {
-        signUp: async ({input}: { input: SignUpInput }, context: Context): Promise<any> => {
+        signUp: async (_, {input}: { input: SignUpInput }, context: Context): Promise<any> => {
             const { username, name, password, gender } = input;
 
-            if (!username || !name || !password || gender) {
+            if (!username || !name || !password || !gender) {
                 throw new Error("All fields are required");
             }
             try {
-                const doesUserExist = await User.find(user => user.username === username);
+                const doesUserExist = await User.findOne({username});
                 if (doesUserExist) {
                     throw new Error("User already exists");
                 }
@@ -77,7 +77,7 @@ const userResolver: IResolvers = {
                 throw new Error(err.message || "Internal server error");
             }
         },
-        login: async ({ input }, context) => {       
+        login: async (_, { input }, context) => {       
             const {username, password} = input;
             try {
                 const {user} = await context.authenticate("graphql-local", {username, password});
@@ -91,7 +91,7 @@ const userResolver: IResolvers = {
                 throw new Error(err);
             } 
         },
-        logout: async (context) => {
+        logout: async (_, __, context) => {
             try {
                 await context.logout();
                 context.req.session.destroy(
