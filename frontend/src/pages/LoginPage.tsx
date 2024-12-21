@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import InputField from "../components/InputField";
+import { LoginResponse } from "../types/user.types";
 
-const LoginPage = () => {
-    const [loginData, setLoginData] = useState({
+const LoginPage: React.FC = () => {
+    const [loginData, setLoginData] = useState<LoginResponse>({
         username: "",
         password: "",
     });
@@ -22,7 +23,7 @@ const LoginPage = () => {
     };
 
     return (
-        <div className='flex justify-center items-center h-screen'>
+        <div className='flex justify-center items-center'>
             <div className='flex rounded-lg overflow-hidden z-50 bg-gray-300'>
                 <div className='w-full bg-gray-100 min-w-80 sm:min-w-96 flex items-center justify-center'>
                     <div className='max-w-md w-full p-6'>

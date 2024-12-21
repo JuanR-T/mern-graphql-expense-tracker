@@ -2,9 +2,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import InputField from "../components/InputField";
 import RadioButton from "../components/RadioButton";
+import { User } from "../types/user.types";
 
-const SignUpPage = () => {
-    const [signUpData, setSignUpData] = useState({
+const SignUpPage: React.FC = () => {
+    const [signUpData, setSignUpData] = useState<User>({
         name: "",
         username: "",
         password: "",
@@ -33,7 +34,7 @@ const SignUpPage = () => {
     };
 
     return (
-        <div className='h-screen flex justify-center items-center'>
+        <div className='flex justify-center items-center'>
             <div className='flex rounded-lg overflow-hidden z-50 bg-gray-300'>
                 <div className='w-full bg-gray-100 min-w-80 sm:min-w-96 flex items-center justify-center'>
                     <div className='max-w-md w-full p-6'>
