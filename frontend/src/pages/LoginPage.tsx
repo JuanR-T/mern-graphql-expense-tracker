@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import InputField from "../components/InputField";
 import { LOGIN } from "../graphql/mutations/user.mutation";
-import GET_AUTHENTICATED_USER from "../graphql/queries/user.query";
+import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 import { LoginResponse } from "../types/user.types";
 
 const LoginPage: React.FC = () => {

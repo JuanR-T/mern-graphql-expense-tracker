@@ -9,7 +9,7 @@ import TransactionForm from "../components/TransactionForm";
 import { client } from "../graphql/client/client.init";
 import { LOGOUT } from "../graphql/mutations/user.mutation";
 import { GET_TRANSACTION_STATISTICS } from "../graphql/queries/transaction.query";
-import GET_AUTHENTICATED_USER from "../graphql/queries/user.query";
+import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

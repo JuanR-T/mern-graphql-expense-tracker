@@ -7,6 +7,7 @@ import { MdOutlinePayments } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useDeleteTransaction } from "../graphql/hooks/useDeleteTransaction";
 import { Transaction as ITransaction } from "../types/transaction.types";
+import { User } from "../types/user.types";
 import capitalizeLetter from "../utils/capitalizeLetter";
 import { formatDate } from "../utils/formatDate";
 
@@ -16,10 +17,9 @@ const categoryColorMap: { [key: string]: string } = {
     investment: "from-blue-700 to-blue-400",
 };
 
-const Card = ({ transaction }: { transaction: ITransaction }) => {
+const Card = ({ transaction, authUser }: { transaction: ITransaction, authUser: User }) => {
     let { _id, category, amount, location, date, paymentType, description } = transaction;
     const cardClass = categoryColorMap[category];
-
     const { deleteTransaction, loading } = useDeleteTransaction();
     const { capitalizedDescription, capitalizedCategory, capitalizedPaymentType } = capitalizeLetter(description, category, paymentType);
     const formattedDate = formatDate(Number(date));
@@ -69,6 +69,7 @@ const Card = ({ transaction }: { transaction: ITransaction }) => {
                 </p>
                 <div className='flex justify-between items-center'>
                     <p className='text-xs text-black font-bold'>{formattedDate}</p>
+                    <img src={`${authUser?.profilePicture}`} className='h-8 w-8 border rounded-full' alt='' />
                 </div>
             </div>
         </div>

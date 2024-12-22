@@ -93,7 +93,6 @@ const transactionResolver = {
                 if (!deletedTransaction) {
                     throw new Error("Transaction not found, couldn't delete");
                 };
-                console.log(deletedTransaction, "deletedTransaction")
                 return deletedTransaction;
             } catch (err) {
                 console.error("Error deleting the transaction: ", err);

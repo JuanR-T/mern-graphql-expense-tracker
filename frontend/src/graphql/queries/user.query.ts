@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const GET_AUTHENTICATED_USER = gql`
+export const GET_AUTHENTICATED_USER = gql`
     query GetAuthenticatedUser {
         authUser {
             _id
@@ -12,4 +12,23 @@ const GET_AUTHENTICATED_USER = gql`
     }
 `;
 
-export default GET_AUTHENTICATED_USER;
+export const GET_USER_AND_TRANSACTIONS = gql`
+    query GetUserAndTransactions($userId: ID!) {
+        user(userId: $userId) {
+            _id
+            gender
+            name
+            profilePicture
+            username
+            # This is possible thanks to the relationship resolver in the User model
+            transactions {
+                _id
+                amount
+                category
+                date
+                description
+                location
+                paymentType
+            }
+        }
+    }`;

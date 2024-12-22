@@ -1,11 +1,11 @@
 import { IResolvers } from "@graphql-tools/utils";
 import bcrypt from "bcrypt";
+import Transaction from "src/models/transaction.model";
 import User from "src/models/user.model.js";
 import { Context, SignUpInput } from "src/types/user.js";
 
 const userResolver: IResolvers = {
     //Todo remove any and replace with proper types
-    //Todo add user/transaction relation
     Query: {
         users: async (_, __,): Promise<any> => {
             try {
@@ -108,6 +108,17 @@ const userResolver: IResolvers = {
             } catch (err) {
                 console.error("Error logging out user: ", err);
                 throw new Error(err);
+            }
+        }
+    },
+    User: {
+        transactions: async (parent) => {
+            try {
+                const transactions = await Transaction.find({userId: parent._id});
+                return transactions;
+            } catch (err) {
+                console.error("Error getting the transactions: ", err);
+                throw new Error(err.message || "Internal server error");
             }
         }
     }

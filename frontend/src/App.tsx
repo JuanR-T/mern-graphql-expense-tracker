@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { Toaster } from "react-hot-toast";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
-import GET_AUTHENTICATED_USER from "./graphql/queries/user.query";
+import { GET_AUTHENTICATED_USER } from "./graphql/queries/user.query";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
