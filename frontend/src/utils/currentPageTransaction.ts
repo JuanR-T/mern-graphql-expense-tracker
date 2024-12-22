@@ -4,7 +4,7 @@ import { Transaction } from "../types/transaction.types";
 
 export const currentPageTransaction = (paramsId: string | undefined) => {
     const cachedData: any = client.cache.readQuery({ query: GET_TRANSACTIONS });
-    const transaction: Transaction = cachedData.getTransactions.find(
+    const transaction: Transaction = cachedData?.getTransactions.find(
         (item: Transaction) => item._id === paramsId
     );
 
