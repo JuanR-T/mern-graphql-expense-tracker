@@ -10,7 +10,7 @@ import SignUpPage from "./pages/SignUpPage";
 import TransactionPage from "./pages/TransactionPage";
 
 function App() {
-  const { loading, data, error } = useQuery(GET_AUTHENTICATED_USER);
+  const { data } = useQuery(GET_AUTHENTICATED_USER);
   return (
     <>
       {data?.authUser && <Header />}

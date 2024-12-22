@@ -5,7 +5,7 @@ export const cache = new InMemoryCache({
         Query: {
             fields: {
                 getTransactions: {
-                    merge(existing = [], incoming) {
+                    merge(incoming) {
                         return incoming;
                     },
                 },
