@@ -16,7 +16,16 @@ const SignUpPage: React.FC = () => {
         username: "",
     });
     const [signup, { loading }] = useMutation(SIGN_UP, {
-        refetchQueries: [GET_AUTHENTICATED_USER],
+        update(cache, { data }) {
+            if (data?.signUp) {
+                cache.writeQuery({
+                    query: GET_AUTHENTICATED_USER,
+                    data: {
+                        authUser: data.signUp,
+                    },
+                });
+            }
+        },
     });
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
@@ -40,7 +49,6 @@ const SignUpPage: React.FC = () => {
             toast.error("Please fill in all fields.");
             return;
         }
-        console.log("signUpData", { input: signUpData });
         try {
             await signup({
                 variables: {

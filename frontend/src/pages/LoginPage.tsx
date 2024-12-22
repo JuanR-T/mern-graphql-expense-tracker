@@ -14,8 +14,18 @@ const LoginPage: React.FC = () => {
     });
 
     const [login, { loading }] = useMutation(LOGIN, {
-        refetchQueries: [GET_AUTHENTICATED_USER],
-    });
+        // This uppdate the cache after login, avoiding another network request
+        update(cache, { data }) {
+            if (data?.login) {
+                cache.writeQuery({
+                    query: GET_AUTHENTICATED_USER,
+                    data: {
+                        authUser: data.login,
+                    },
+                });
+            }
+        },
+    })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

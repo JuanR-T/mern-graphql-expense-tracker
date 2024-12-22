@@ -8,8 +8,6 @@ import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { MdLogout } from "react-icons/md";
 import { LOGOUT } from "../graphql/mutations/user.mutation";
-import GET_AUTHENTICATED_USER from "../graphql/queries/user.query";
-
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
@@ -29,7 +27,11 @@ const HomePage = () => {
         ],
     };
     const [logout, { loading }] = useMutation(LOGOUT, {
-        refetchQueries: [GET_AUTHENTICATED_USER],
+        update(cache, { data }) {
+            if (data?.logout) {
+                cache.evict({ fieldName: 'authUser' });
+            }
+        }
     });
     const handleLogout = async () => {
         try {
