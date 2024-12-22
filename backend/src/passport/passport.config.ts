@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { GraphQLLocalStrategy } from "graphql-passport";
 import passport from "passport";
-import User from "src/models/user.model";
+import User from "../models/user.model.js";
 
 export const configurePassport = async () => {
     //these two functions are used to serialize and deserialize the user object, to open sessions

@@ -1,6 +1,6 @@
 import console from "console";
-import Transaction from "src/models/transaction.model.js";
-import { Context } from "src/types/user.js";
+import Transaction from "../models/transaction.model.js";
+import { Context } from "../types/user.js";
 
 const transactionResolver = {
     Query: {

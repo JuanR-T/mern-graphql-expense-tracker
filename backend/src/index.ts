@@ -67,10 +67,11 @@ app.use(
     }),
 );
 
-app.use(express.static(path.join(__dirname, 'frontend/dist')));
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
+
 
 await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4000 }, resolve),

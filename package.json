@@ -4,8 +4,8 @@
   "description": "This is an expense tracker built with MERN stack and GraphQL",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node backend/index.js",
-    "dev": "NODE_ENV=development nodemon backend/index.js",
+    "start": "NODE_ENV=production npm run start --prefix backend",
+    "dev": "NODE_ENV=development nodemon backend/src/index.js",
     "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix backend && npm run build --prefix frontend"
   },
   "keywords": [],

@@ -1,8 +1,8 @@
 import { IResolvers } from "@graphql-tools/utils";
 import bcrypt from "bcrypt";
-import Transaction from "src/models/transaction.model";
-import User from "src/models/user.model.js";
-import { Context, SignUpInput } from "src/types/user.js";
+import Transaction from "../models/transaction.model.js";
+import User from "../models/user.model.js";
+import { Context, SignUpInput } from "../types/user.js";
 
 const userResolver: IResolvers = {
     //Todo remove any and replace with proper types
