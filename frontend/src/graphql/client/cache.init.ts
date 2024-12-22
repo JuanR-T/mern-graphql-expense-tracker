@@ -4,9 +4,9 @@ export const cache = new InMemoryCache({
     typePolicies: {
         Query: {
             fields: {
-                authUser: {
-                    read(existing) {
-                        return existing;
+                getTransactions: {
+                    merge(existing = [], incoming) {
+                        return incoming;
                     },
                 },
             },

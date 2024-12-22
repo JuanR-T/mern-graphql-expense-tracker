@@ -11,18 +11,14 @@ const transactionTypeDef = `#graphql
     }
 
     type Query {
-        transactions: [Transaction!]
-        transaction(transactionId: ID!): Transaction!
+        getTransactions: [Transaction!]
+        getTransactionById(transactionId: ID!): Transaction!
     }
 
     type Mutation {
         createTransaction(input: CreateTransactionInput!): Transaction!
         updateTransaction(input: UpdateTransactionInput!): Transaction!
-        deleteTransaction(transactionId: ID!): DeleteResponse!
-    }
-
-    type DeleteResponse {
-        message: String!
+        deleteTransaction(transactionId: ID!): Transaction!
     }
 
     input CreateTransactionInput {

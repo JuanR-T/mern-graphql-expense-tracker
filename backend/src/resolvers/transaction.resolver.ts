@@ -1,22 +1,26 @@
-import Transaction from "src/models/transaction.model";
+import console from "console";
+import Transaction from "src/models/transaction.model.js";
+import { Context } from "src/types/user.js";
 
 const transactionResolver = {
     Query: {
-        transactions: async (_, context) => {
+        getTransactions: async (_, __, context: Context) => {
             try {
-                if(!context.getUser()) throw new Error("Unauthorized access");
-                const userId = await context.getUser()._id;
-                const transactions = await Transaction.find({userId});
+                const user = await context.getUser();
+                if(!user) throw new Error("Unauthorized access");
+                console.log(user._id, "userfromcontext")
+                const transactions = await Transaction.find({ userId: user._id });
                 if (!transactions) {
-                    throw new Error("No transactions found");
+                    throw new Error("No transactions found for this user");
                 };
+
                 return transactions;
             } catch (err) {
                 console.error("Error getting the transactions: ", err);
                 throw new Error(err.message || "Internal server error");
             }
         },
-        transaction: async (_, {transactionId}, context) => {
+        getTransactionById: async (_, {transactionId}, context) => {
             if(!context.getUser()) throw new Error("Unauthorized access");
             try {
                 const transaction = await Transaction.findById(transactionId);
@@ -74,6 +78,7 @@ const transactionResolver = {
                 if (!deletedTransaction) {
                     throw new Error("Transaction not found, couldn't delete");
                 };
+                console.log(deletedTransaction, "deletedTransaction")
                 return deletedTransaction;
             } catch (err) {
                 console.error("Error deleting the transaction: ", err);

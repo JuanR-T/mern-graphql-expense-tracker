@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 
 export const GET_TRANSACTIONS = gql`
     query GetTransactions {
-        GetTransactions {
+        getTransactions {
             _id
             description
             paymentType
@@ -16,7 +16,7 @@ export const GET_TRANSACTIONS = gql`
 
 export const GET_TRANSACTION_BY_ID = gql`
     query GetTransactionById($transactionId: ID!) {
-        GetTransactionsById(transaction: $transactionId) {
+        getTransactionById(transaction: $transactionId) {
             description
             paymentType
             category

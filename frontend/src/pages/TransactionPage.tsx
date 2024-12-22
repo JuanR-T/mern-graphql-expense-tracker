@@ -1,20 +1,45 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import TransactionFormSkeleton from "../components/skeletons/TransactionFormSkeleton";
+import { useUpdateTransaction } from "../graphql/hooks/useUpdateTransaction";
 import { Transaction } from "../types/transaction.types";
+import { currentPageTransaction } from "../utils/currentPageTransaction";
 
 const TransactionPage: React.FC = () => {
+    const { updateTransaction, loading } = useUpdateTransaction();
+    const { id: paramsId } = useParams();
+    const { category, paymentType, location, date, amount, description } = currentPageTransaction(paramsId);
+
     const [formData, setFormData] = useState<Transaction>({
-        description: "",
-        paymentType: "",
-        category: "",
-        amount: 0,
-        location: "",
-        date: "",
+        description,
+        paymentType,
+        category,
+        amount,
+        location,
+        date: new Date(+date).toISOString().substring(0, 10),
     });
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("formData", formData);
+        const convertedAmount = parseFloat(String(formData.amount));
+        try {
+            await updateTransaction({
+                variables: {
+                    input: {
+                        transactionId: paramsId,
+                        ...formData,
+                        amount: convertedAmount,
+                    },
+                },
+            });
+            toast.success("Transaction updated successfully");
+        } catch (error) {
+            console.error("Error updating transaction", error);
+            toast.error("Error updating transaction");
+        }
     };
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevFormData) => ({
@@ -22,13 +47,11 @@ const TransactionPage: React.FC = () => {
             [name]: value,
         }));
     };
-
-    // if (loading) return <TransactionFormSkeleton />;
-
+    if (loading) { return <TransactionFormSkeleton /> }
     return (
         <div className='h-screen flex justify-center items-center'>
             <div className='bg-gray-100 rounded-lg shadow-2xl max-w-xl mx-auto flex flex-col items-center justify-center p-4'>
-                <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r text-green-500 inline-block text-transparent bg-clip-text'>
+                <p className='md:text-4xl text-2xl lg:text-4xl font-bold text-center relative z-50 mb-4 mr-4 bg-gradient-to-r text-black inline-block bg-clip-text'>
                     Update this transaction
                 </p>
                 <form className='w-full max-w-lg flex flex-col gap-5 px-3 ' onSubmit={handleSubmit}>
@@ -179,7 +202,7 @@ const TransactionPage: React.FC = () => {
             bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50'
                         type='submit'
                     >
-                        Update Transaction
+                        {loading ? "Updating..." : "Update"}
                     </button>
                 </form>
             </div>

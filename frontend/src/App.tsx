@@ -18,7 +18,7 @@ function App() {
         <Route path='/' element={data?.authUser ? <HomePage /> : <Navigate to="/login" />} />
         <Route path='/login' element={data?.authUser ? <Navigate to="/" /> : <LoginPage />} />
         <Route path='/signup' element={data?.authUser ? <Navigate to="/" /> : <SignUpPage />} />
-        <Route path='/transaction/:id' element={data?.authUser ? <Navigate to="/login" /> : <TransactionPage />} />
+        <Route path='/transaction/:id' element={data?.authUser ? <TransactionPage /> : <Navigate to="/login" />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
       <Toaster />
