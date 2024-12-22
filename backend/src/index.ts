@@ -10,10 +10,10 @@ import { buildContext } from 'graphql-passport';
 import http from 'http';
 import passport from 'passport';
 import path from 'path';
-import { connectDB } from './db/connecDB';
-import { configurePassport } from './passport/passport.config';
-import mergedResolvers from './resolvers';
-import mergedTypeDefs from './typeDefs';
+import { connectDB } from './db/connecDB.js';
+import { configurePassport } from './passport/passport.config.js';
+import mergedResolvers from './resolvers/index.js';
+import mergedTypeDefs from './typeDefs/index.js';
 
 dotenv.config();
 configurePassport();

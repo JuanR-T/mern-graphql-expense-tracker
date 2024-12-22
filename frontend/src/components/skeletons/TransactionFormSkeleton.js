@@ -1,0 +1,5 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+const TransactionFormSkeleton = () => {
+    return (_jsxs("div", { className: 'h-screen max-w-xl mx-auto py-10', children: [_jsx("h3", { className: 'h-6 bg-gray-200 rounded animate-pulse' }), _jsxs("ul", { className: 'mt-5 flex gap-3', children: [_jsx("li", { className: 'w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse' }), _jsx("li", { className: 'w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse' }), _jsx("li", { className: 'w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse' })] }), _jsxs("ul", { className: 'mt-5 flex gap-3', children: [_jsx("li", { className: 'w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse' }), _jsx("li", { className: 'w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse' })] }), _jsx("ul", { className: 'mt-5 flex gap-3', children: _jsx("li", { className: 'w-full h-6 bg-gray-200 rounded dark:bg-gray-700 animate-pulse' }) })] }));
+};
+export default TransactionFormSkeleton;

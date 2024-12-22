@@ -1,0 +1,10 @@
+import { jsx as _jsx } from "react/jsx-runtime";
+import { ApolloProvider } from '@apollo/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import GridBackground from './components/ui/grid-background';
+import { client } from './graphql/client/client.init';
+import './index.css';
+createRoot(document.getElementById('root')).render(_jsx(StrictMode, { children: _jsx(BrowserRouter, { children: _jsx(GridBackground, { children: _jsx(ApolloProvider, { client: client, children: _jsx(App, {}) }) }) }) }));
