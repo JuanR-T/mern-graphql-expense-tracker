@@ -9,6 +9,7 @@ import session from 'express-session';
 import { buildContext } from 'graphql-passport';
 import http from 'http';
 import passport from 'passport';
+import path from 'path';
 import { connectDB } from './db/connecDB';
 import { configurePassport } from './passport/passport.config';
 import mergedResolvers from './resolvers';
@@ -16,7 +17,7 @@ import mergedTypeDefs from './typeDefs';
 
 dotenv.config();
 configurePassport();
-
+const __dirname = path.resolve();
 const app = express();
 const httpServer = http.createServer(app);
 
@@ -65,6 +66,11 @@ app.use(
         context: async ({ req, res }) => (buildContext({req, res})),
     }),
 );
+
+app.use(express.static(path.join(__dirname, 'frontend/dist')));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+});
 
 await new Promise<void>((resolve) =>
     httpServer.listen({ port: 4000 }, resolve),
