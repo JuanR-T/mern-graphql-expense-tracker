@@ -1,6 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TransactionFormSkeleton from "../components/skeletons/TransactionFormSkeleton";
 import { useUpdateTransaction } from "../graphql/hooks/useUpdateTransaction";
 import { Transaction } from "../types/transaction.types";
@@ -20,6 +20,7 @@ const TransactionPage: React.FC = () => {
         date: new Date(+date).toISOString().substring(0, 10),
     });
 
+    const navigate = useNavigate();
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const convertedAmount = parseFloat(String(formData.amount));
@@ -33,6 +34,7 @@ const TransactionPage: React.FC = () => {
                     },
                 },
             });
+            navigate("/");
             toast.success("Transaction updated successfully");
         } catch (error) {
             console.error("Error updating transaction", error);

@@ -2,6 +2,7 @@ import { gql, useMutation } from "@apollo/client";
 import { currentPageTransaction } from "../../utils/currentPageTransaction"; // Import your utility function
 import { client } from "../client/client.init";
 import { UPDATE_TRANSACTION } from "../mutations/transaction.mutation";
+import { GET_TRANSACTION_STATISTICS } from "../queries/transaction.query";
 
 /**
  * useUpdateTransaction
@@ -45,6 +46,7 @@ export const useUpdateTransaction = () => {
                 }
             }
         },
+        refetchQueries: [{ query: GET_TRANSACTION_STATISTICS }],
     });
 
     return {

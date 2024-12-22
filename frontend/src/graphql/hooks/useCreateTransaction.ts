@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { CREATE_TRANSACTION } from "../mutations/transaction.mutation";
-import { GET_TRANSACTIONS } from "../queries/transaction.query";
+import { GET_TRANSACTION_STATISTICS, GET_TRANSACTIONS } from "../queries/transaction.query";
 
 /**
  * Custom hook to create a transaction using Apollo Client's useMutation.
@@ -23,7 +23,8 @@ export const useCreateTransaction = () => {
                 });
             }
         },
-    });
+        refetchQueries: [{ query: GET_TRANSACTION_STATISTICS }],
+    },);
 
     return { createTransaction, loading };
 };

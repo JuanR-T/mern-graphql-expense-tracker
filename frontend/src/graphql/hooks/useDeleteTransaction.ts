@@ -1,5 +1,6 @@
 import { StoreObject, gql, useMutation } from "@apollo/client";
 import { DELETE_TRANSACTION } from "../mutations/transaction.mutation";
+import { GET_TRANSACTION_STATISTICS } from "../queries/transaction.query";
 
 /**
  * useDeleteTransaction
@@ -51,7 +52,8 @@ export const useDeleteTransaction = () => {
                         }
                     }
                 });
-            }
+            },
+            refetchQueries: [{ query: GET_TRANSACTION_STATISTICS }],
     });
 
     return {

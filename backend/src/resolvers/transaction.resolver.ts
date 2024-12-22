@@ -8,7 +8,6 @@ const transactionResolver = {
             try {
                 const user = await context.getUser();
                 if(!user) throw new Error("Unauthorized access");
-                console.log(user._id, "userfromcontext")
                 const transactions = await Transaction.find({ userId: user._id });
                 if (!transactions) {
                     throw new Error("No transactions found for this user");
@@ -19,6 +18,22 @@ const transactionResolver = {
                 console.error("Error getting the transactions: ", err);
                 throw new Error(err.message || "Internal server error");
             }
+        },
+        getTransactionsStatistics: async (_, __, context: Context) => {
+            if (!context.getUser()) throw new Error("Unauthorized");
+
+			const userId = context.getUser()._id;
+			const transactions = await Transaction.find({ userId });
+			const categoryMap = {};
+
+			transactions.forEach((transaction) => {
+				if (!categoryMap[transaction.category]) {
+					categoryMap[transaction.category] = 0;
+				}
+				categoryMap[transaction.category] += transaction.amount;
+			});
+
+			return Object.entries(categoryMap).map(([category, totalAmount]) => ({ category, totalAmount }));
         },
         getTransactionById: async (_, {transactionId}, context) => {
             if(!context.getUser()) throw new Error("Unauthorized access");
