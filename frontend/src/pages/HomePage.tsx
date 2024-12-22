@@ -7,6 +7,7 @@ import TransactionForm from "../components/TransactionForm";
 import { useMutation } from "@apollo/client";
 import toast from "react-hot-toast";
 import { MdLogout } from "react-icons/md";
+import { client } from "../graphql/client/client.init";
 import { LOGOUT } from "../graphql/mutations/user.mutation";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,12 +31,14 @@ const HomePage = () => {
         update(cache, { data }) {
             if (data?.logout) {
                 cache.evict({ fieldName: 'authUser' });
+                cache.gc();
             }
         }
     });
     const handleLogout = async () => {
         try {
             await logout();
+            client.cache.reset();
             toast.success("Logged out successfully");
         } catch (error: any) {
             console.error("Error during logout", error);
