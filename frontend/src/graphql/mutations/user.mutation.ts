@@ -5,8 +5,9 @@ export const SIGN_UP = gql`
         signUp(input: $input) {
             _id
             name
-            username
             gender
+            username
+            profilePicture
         }
     }
 `;
@@ -15,7 +16,9 @@ export const LOGIN = gql`
         login(input: $input) {
             _id
             name
+            gender
             username
+            profilePicture
         }
     }
 `;

@@ -1,4 +1,13 @@
+import { useMutation } from "@apollo/client";
+import { toast } from "react-hot-toast";
+import { CREATE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
+import { GET_TRANSACTIONS } from "../graphql/queries/transaction.query";
+
 const TransactionForm: React.FC = () => {
+    const [CreateTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
+        refetchQueries: [{ query: GET_TRANSACTIONS }],
+    });
+
     const handleSubmit = async (e: React.FormEvent<EventTarget>) => {
         e.preventDefault();
 
@@ -12,22 +21,38 @@ const TransactionForm: React.FC = () => {
             location: formData.get("location"),
             date: formData.get("date"),
         };
-        console.log("transactionData", transactionData);
+
+        if (!transactionData.description || !transactionData.paymentType || !transactionData.category || !transactionData.amount || !transactionData.location || !transactionData.date) {
+            return toast.error("Please fill in all fields.");
+        };
+
+        try {
+            await CreateTransaction({
+                variables: {
+                    input: transactionData,
+                },
+            });
+            form?.reset();
+            return toast.success("Transaction added successfully");
+        } catch (error) {
+            console.error(error, "Error adding transaction");
+            return toast.error("Error adding transaction");
+        }
     };
 
     return (
-        <form className='w-full max-w-lg flex flex-col gap-5 px-3' onSubmit={handleSubmit}>
+        <form className='bg-slate-200 shadow-2xl p-4 rounded-lg w-full max-w-lg flex flex-col gap-5 px-3' onSubmit={handleSubmit}>
             {/* TRANSACTION */}
             <div className='flex flex-wrap'>
                 <div className='w-full'>
                     <label
-                        className='block uppercase tracking-wide text-white text-xs font-bold mb-2'
+                        className='block uppercase tracking-wide text-black text-xs font-bold mb-2'
                         htmlFor='description'
                     >
                         Transaction
                     </label>
                     <input
-                        className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+                        className='appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
                         id='description'
                         name='description'
                         type='text'
@@ -40,14 +65,14 @@ const TransactionForm: React.FC = () => {
             <div className='flex flex-wrap gap-3'>
                 <div className='w-full flex-1 mb-6 md:mb-0'>
                     <label
-                        className='block uppercase tracking-wide text-white text-xs font-bold mb-2'
+                        className='block uppercase tracking-wide text-black text-xs font-bold mb-2'
                         htmlFor='paymentType'
                     >
                         Payment Type
                     </label>
                     <div className='relative'>
                         <select
-                            className='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+                            className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
                             id='paymentType'
                             name='paymentType'
                         >
@@ -69,14 +94,14 @@ const TransactionForm: React.FC = () => {
                 {/* CATEGORY */}
                 <div className='w-full flex-1 mb-6 md:mb-0'>
                     <label
-                        className='block uppercase tracking-wide text-white text-xs font-bold mb-2'
+                        className='block uppercase tracking-wide text-black text-xs font-bold mb-2'
                         htmlFor='category'
                     >
                         Category
                     </label>
                     <div className='relative'>
                         <select
-                            className='block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+                            className='block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
                             id='category'
                             name='category'
                         >
@@ -98,11 +123,11 @@ const TransactionForm: React.FC = () => {
 
                 {/* AMOUNT */}
                 <div className='w-full flex-1 mb-6 md:mb-0'>
-                    <label className='block uppercase text-white text-xs font-bold mb-2' htmlFor='amount'>
+                    <label className='block uppercase text-black text-xs font-bold mb-2' htmlFor='amount'>
                         Amount($)
                     </label>
                     <input
-                        className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
+                        className='appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
                         id='amount'
                         name='amount'
                         type='number'
@@ -115,13 +140,13 @@ const TransactionForm: React.FC = () => {
             <div className='flex flex-wrap gap-3'>
                 <div className='w-full flex-1 mb-6 md:mb-0'>
                     <label
-                        className='block uppercase tracking-wide text-white text-xs font-bold mb-2'
+                        className='block uppercase tracking-wide text-black text-xs font-bold mb-2'
                         htmlFor='location'
                     >
                         Location
                     </label>
                     <input
-                        className='appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
+                        className='appearance-none block w-full bg-white text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
                         id='location'
                         name='location'
                         type='text'
@@ -131,14 +156,14 @@ const TransactionForm: React.FC = () => {
 
                 {/* DATE */}
                 <div className='w-full flex-1'>
-                    <label className='block uppercase tracking-wide text-white text-xs font-bold mb-2' htmlFor='date'>
+                    <label className='block uppercase tracking-wide text-black text-xs font-bold mb-2' htmlFor='date'>
                         Date
                     </label>
                     <input
                         type='date'
                         name='date'
                         id='date'
-                        className='appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none
+                        className='appearance-none block w-full bg-white text-gray-700 border  rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none
 						 focus:bg-white'
                         placeholder='Select date'
                     />
@@ -146,12 +171,13 @@ const TransactionForm: React.FC = () => {
             </div>
             {/* SUBMIT BUTTON */}
             <button
-                className='text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br
+                className='text-black font-bold w-full rounded px-4 py-2 bg-gradient-to-br
           from-green-500 to-green-500 hover:from-green-600 hover:to-green-600
 						disabled:opacity-70 disabled:cursor-not-allowed'
                 type='submit'
+                disabled={loading}
             >
-                Add Transaction
+                {loading ? 'Loading...' : 'Add Transaction'}
             </button>
         </form>
     );

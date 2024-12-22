@@ -2,7 +2,7 @@ import Transaction from "src/models/transaction.model";
 
 const transactionResolver = {
     Query: {
-        transactions: async (context) => {
+        transactions: async (_, context) => {
             try {
                 if(!context.getUser()) throw new Error("Unauthorized access");
                 const userId = await context.getUser()._id;
@@ -16,7 +16,7 @@ const transactionResolver = {
                 throw new Error(err.message || "Internal server error");
             }
         },
-        transaction: async ({transactionId}, context) => {
+        transaction: async (_, {transactionId}, context) => {
             if(!context.getUser()) throw new Error("Unauthorized access");
             try {
                 const transaction = await Transaction.findById(transactionId);
@@ -31,7 +31,7 @@ const transactionResolver = {
         }
     },
     Mutation: {
-        createTransaction: async ({input}, context) => {
+        createTransaction: async (_, {input}, context) => {
             if(!context.getUser()) throw new Error("Unauthorized access");
             const { description, paymentType, category, amount, date } = input;
             if (!description || !paymentType || !category || !amount || !date) {
@@ -50,7 +50,7 @@ const transactionResolver = {
                 throw new Error(err.message || "Internal server error");
             }
         },
-        updateTransaction: async ({input}, context) => {
+        updateTransaction: async (_, {input}, context) => {
             if(!context.getUser()) throw new Error("Unauthorized access");
             const { transactionId } = input;
             try {
@@ -66,7 +66,7 @@ const transactionResolver = {
                 throw new Error(err.message || "Internal server error");
             }
         },
-        deleteTransaction: async ({transactionId}, context) => {
+        deleteTransaction: async (_, {transactionId}, context) => {
             if(!context.getUser()) throw new Error("Unauthorized access");
 
             try {

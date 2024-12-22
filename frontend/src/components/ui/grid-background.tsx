@@ -14,8 +14,8 @@ const GridBackground = ({
             {children}
         </div>
     ) : (
-        <div className="w-full dark:bg-green-900 bg-green-100 dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative">
-            <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-green-800 bg-green-200 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+        <div className="w-full dark:bg-slate-900 bg-slate-100 dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative">
+            <div className="absolute pointer-events-none flex items-center justify-center dark:bg-slate-800 bg-slate-200 [mask-image:radial-gradient(ellipse_at_center,transparent_0%,black)]"></div>
             {children}
         </div>
     );

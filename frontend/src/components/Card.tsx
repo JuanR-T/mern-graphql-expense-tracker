@@ -13,8 +13,7 @@ const categoryColorMap: { [key: string]: string } = {
     investment: "from-blue-700 to-blue-400",
 };
 
-const Card = ({ transaction, authUser, cardType }: { transaction: ITransaction, authUser: any, cardType: any }) => {
-
+const Card = ({ transaction }: { transaction: ITransaction }) => {
     let { category, amount, location, date, paymentType, description } = transaction;
     const cardClass = categoryColorMap[category];
     /*const [deleteTransaction, { loading }] = useMutation(DELETE_TRANSACTION, {
@@ -63,7 +62,6 @@ const Card = ({ transaction, authUser, cardType }: { transaction: ITransaction, 
                 </p>
                 <div className='flex justify-between items-center'>
                     <p className='text-xs text-black font-bold'>{formattedDate}</p>
-                    <img src={authUser?.profilePicture} className='h-8 w-8 border rounded-full' alt='' />
                 </div>
             </div>
         </div>

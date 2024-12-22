@@ -4,6 +4,7 @@ export interface User {
     name: string;
     password: string;
     gender: string;
+    profilePicture?: string;
 }
 
 export type LoginResponse = {
