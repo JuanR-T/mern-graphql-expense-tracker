@@ -3,7 +3,8 @@ node_modules/
 
 # Ignore build output
 build/
-dist/
+dist
+dist-ssr
 
 # Ignore environment-specific files
 .env
