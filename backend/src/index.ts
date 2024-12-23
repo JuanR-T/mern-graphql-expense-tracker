@@ -10,6 +10,7 @@ import { buildContext } from 'graphql-passport';
 import http from 'http';
 import passport from 'passport';
 import path from 'path';
+import job from './cron.js';
 import { connectDB } from './db/connecDB.js';
 import { configurePassport } from './passport/passport.config.js';
 import mergedResolvers from './resolvers/index.js';
@@ -44,6 +45,7 @@ app.use (
 )
 app.use(passport.initialize());
 app.use(passport.session());
+job.start();
 
 const server = new ApolloServer({
     typeDefs: mergedTypeDefs,
